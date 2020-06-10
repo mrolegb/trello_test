@@ -2,7 +2,8 @@ import requests, json
 
 from pytest_bdd import scenario, given, when, then, parsers
 
-from trello.secure import TRELLO_KEY, TRELLO_TOKEN
+from tests.steps.trello.api import trello_call
+from tests.steps.trello.secure import TRELLO_KEY, TRELLO_TOKEN
 
 
 BOARDS_URL = "https://api.trello.com/1/boards/"
@@ -17,43 +18,22 @@ def test_api():
 
 @given(parsers.parse('a new board named {name} was created'))
 def new_board(name):
-    url = BOARDS_URL
-
-    query = {
-        'name': name,
-        'key': TRELLO_KEY,
-        'token': TRELLO_TOKEN
+    params = {
+        'name': name
     }
 
-    response = requests.request(
-        "POST",
-        url,
-        params=query,
-    )
+    code, results = trello_call("POST", BOARDS_URL, params)
 
-    assert response.status_code == 200
-
-    context['board_id'] = json.loads(response.text)['id']
+    assert code == 200
+    context['board_id'] = json.loads(results)['id']
 
 
 @when('I fetch the board by id')
 def get_board():
-    url = BOARDS_URL
+    code, results = trello_call("GET", BOARDS_URL + context['board_id'])
 
-    query = {
-        'key': TRELLO_KEY,
-        'token': TRELLO_TOKEN
-    }
-
-    response = requests.request(
-        "GET",
-        url + context['board_id'],
-        params=query
-    )
-
-    assert response.status_code == 200
-
-    context['last_response'] = json.loads(response.text)
+    assert code == 200
+    context['last_response'] = json.loads(results)
 
 
 @then(parsers.parse('I can verify the board name is {name}'))
