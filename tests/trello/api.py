@@ -44,6 +44,6 @@ def create_card(list_id):
 
 
 def delete_boards():
-    _, boards = trello_call("GET", MEMBERS_URL + MEMBER_ID + '/boards')
+    _, boards = trello_call("GET", MEMBERS_URL + '/' + MEMBER_ID + '/boards')
     for board in json.loads(boards):
         trello_call("DELETE", BOARDS_URL + board['id'])
