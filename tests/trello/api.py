@@ -1,7 +1,6 @@
 import requests, json
 
-from tests.trello.secure import TRELLO_KEY, TRELLO_TOKEN
-
+from tests.trello.secure import TRELLO_KEY, TRELLO_TOKEN, MEMBER_ID
 
 BOARDS_URL = "https://api.trello.com/1/boards/"
 CARDS_URL = "https://api.trello.com/1/cards/"
@@ -42,3 +41,9 @@ def create_card(list_id):
         'idList': list_id
     }
     return trello_call("POST", CARDS_URL, params=params)
+
+
+def delete_boards():
+    _, boards = trello_call("GET", MEMBERS_URL + MEMBER_ID + '/boards')
+    for board in json.loads(boards):
+        trello_call("DELETE", BOARDS_URL + board['id'])

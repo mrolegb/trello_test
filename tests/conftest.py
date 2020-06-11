@@ -1,13 +1,14 @@
 import pytest
 
-from tests.trello.api import create_board
+from tests.trello.api import create_board, delete_boards
 from selenium import webdriver
 
 
 @pytest.fixture(scope='session')
 def board(request):
     board_id = create_board()
-    return board_id
+    yield board_id
+    delete_boards()
 
 
 @pytest.fixture(scope='session')
