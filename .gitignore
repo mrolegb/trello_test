@@ -4,5 +4,4 @@ tests/trello/__pycache__/
 .DS_Store
 geckodriver.log
 tests/geckodriver.log
-tests/trello/secure.py
 tests/trello/pages/__pycache__/
