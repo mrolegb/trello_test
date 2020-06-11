@@ -5,6 +5,7 @@ from tests.trello.secure import TRELLO_KEY, TRELLO_TOKEN
 
 BOARDS_URL = "https://api.trello.com/1/boards/"
 CARDS_URL = "https://api.trello.com/1/cards/"
+MEMBERS_URL = "https://api.trello.com/1/members"
 
 
 def trello_call(call, url, params={}):

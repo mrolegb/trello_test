@@ -1,6 +1,6 @@
 import json
 
-from tests.trello.api import trello_call, get_list_by_name, create_card, CARDS_URL
+from tests.trello.api import trello_call, get_list_by_name, create_card, CARDS_URL, MEMBERS_URL, BOARDS_URL
 
 
 def test_create_card_and_comment(board):
@@ -63,3 +63,10 @@ def test_create_delete_card(board):
 
     code, result = trello_call("GET", CARDS_URL + card_id)
     assert code == 404
+
+
+def delete_boards():
+    _, boards = trello_call("GET", MEMBERS_URL + '/user32772205' + '/boards')
+    for board in json.loads(boards):
+        trello_call("DELETE", BOARDS_URL + board['id'])
+
