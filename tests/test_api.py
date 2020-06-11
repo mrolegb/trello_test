@@ -65,7 +65,7 @@ def test_create_delete_card(board):
     assert code == 404
 
 
-def delete_boards():
+def _delete_boards():
     _, boards = trello_call("GET", MEMBERS_URL + '/user32772205' + '/boards')
     for board in json.loads(boards):
         trello_call("DELETE", BOARDS_URL + board['id'])

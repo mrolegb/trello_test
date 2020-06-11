@@ -1,2 +1,7 @@
 .idea/
 tests/__pycache__/
+tests/trello/__pycache__/
+.DS_Store
+geckodriver.log
+tests/geckodriver.log
+tests/trello/secure.py
