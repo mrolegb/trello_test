@@ -29,6 +29,9 @@ def test_find_commented_card(browser):
 
     assert card_page.find_comment('Hello world')
 
+    card_page.add_comment('New comment')
+    assert card_page.find_comment('New comment')
+
 
 def test_find_updated_card(browser):
     login_page = LoginPage(browser)
