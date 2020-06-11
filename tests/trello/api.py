@@ -1,6 +1,4 @@
-import requests, json
-
-from tests.trello.secure import TRELLO_KEY, TRELLO_TOKEN, MEMBER_ID
+import os, requests, json
 
 BOARDS_URL = "https://api.trello.com/1/boards/"
 CARDS_URL = "https://api.trello.com/1/cards/"
@@ -8,9 +6,17 @@ MEMBERS_URL = "https://api.trello.com/1/members"
 
 
 def trello_call(call, url, params={}):
+    if os.environ['KEY'] and os.environ ['TOKEN']:
+        key = os.environ['KEY']
+        token = os.environ['TOKEN']
+    else:
+        from tests.trello.secure import TRELLO_KEY, TRELLO_TOKEN
+        key = TRELLO_KEY
+        token = TRELLO_TOKEN
+
     secure = {
-        'key': TRELLO_KEY,
-        'token': TRELLO_TOKEN
+        'key': key,
+        'token': token
     }
     query = {**params, **secure}
     res = requests.request(call, url, params=query)
@@ -44,6 +50,12 @@ def create_card(list_id):
 
 
 def delete_boards():
-    _, boards = trello_call("GET", MEMBERS_URL + '/' + MEMBER_ID + '/boards')
+    if os.environ['member_id']:
+        member_id = os.environ['member_id']
+    else:
+        from tests.trello.secure import MEMBER_ID
+        member_id = MEMBER_ID
+
+    _, boards = trello_call("GET", MEMBERS_URL + '/' + member_id + '/boards')
     for board in json.loads(boards):
         trello_call("DELETE", BOARDS_URL + board['id'])
